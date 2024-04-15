@@ -1,30 +1,79 @@
-# React + TypeScript + Vite
+# 3D版スイカゲームをReactで作る
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 概要
 
-Currently, two official plugins are available:
+React Three FiberとViteを使用して、宝石落ちモノパズルゲームを開発します。このゲームでは、ランダムに選ばれる宝石を箱の中に落とし、同じ種類の宝石同士をくっつけてスコアを稼ぎます。宝石は物理演算によって動き、ゲームの進行とともに難易度が上がっていきます。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 状態管理
 
-## Expanding the ESLint configuration
+ゲームの状態管理にはZustandを使用します。ZustandはReactのためのシンプルで使いやすい状態管理ライブラリであり、グローバルステートの管理を容易にします。これにより、ゲームのスコア、プレイヤーの進行状況、ゲームの設定など、アプリケーション全体で共有される状態を効率的に管理できます。
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 画面構成
 
-- Configure the top-level `parserOptions` property like this:
+ゲームの主な画面とそのコンポーネント名は以下の通りです。
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+### 1. タイトル画面 (`TitleScreen`)
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- ゲームのタイトルとスタートボタン、オプションへのリンクを表示します。
+
+### 2. ゲーム画面 (`GameScreen`)
+
+- 実際のゲームプレイが行われる画面。宝石が落ちる箱の3Dビュー、スコア表示、操作インターフェースを含みます。
+
+### 3. スコア画面 (`ScoreScreen`)
+
+- ゲーム終了後に表示される画面。獲得したスコアとランキング、リプレイやタイトル画面へのボタンを表示します。
+
+### 4. オプション/設定画面 (`OptionsScreen`)
+
+- ゲームの音量調整や操作方法の説明など、ゲーム設定を変更できる画面。
+
+### 5. チュートリアル画面 (`TutorialScreen`)
+
+- ゲームの基本ルールや操作方法を説明する画面。新しいプレイヤーがゲームを始める前に見ることが想定されます。
+
+## 必要なコンポーネント
+
+`GameScreen` コンポーネントで使用する子コンポーネントを以下に列挙します。
+
+### 1. `GameBoard`
+
+- 説明: 宝石が落ちてくる箱の3Dビューを表示するコンポーネント。React Three Fiberを使用して実装します。
+
+### 2. `Gem`
+
+- 説明: 宝石の3Dモデルを表示するコンポーネント。異なる種類やサイズの宝石を表示するために使用します。
+
+### 3. `ScoreDisplay`
+
+- 説明: 現在のスコアを表示するコンポーネント。スコアの更新があるたびにリアルタイムで表示を更新します。
+
+### 4. `NextGemPreview`
+
+- 説明: 次に落ちてくる宝石のプレビューを表示するコンポーネント。プレイヤーが戦略を立てやすくなります。
+
+### 5. `GameOverOverlay`
+
+- 説明: ゲームオーバー時に表示されるオーバーレイ。リプレイやタイトル画面へのボタンを含みます。
+
+### 6. `DropPositionSelector`
+
+- 説明: プレイヤーが宝石を落とす位置を選択するためのインターフェース。タッチやマウス操作に対応します。
+
+### 7. `PhysicsController`
+
+- 説明: 宝石の落下や衝突の物理演算を制御するコンポーネント。React Three Fiberと物理エンジン（例: cannon.js）を組み合わせて使用します。
+
+これらのコンポーネントは、`GameScreen` コンポーネント内で組み合わせて使用され、ゲームの主要な機能とビジュアルを構成します。各コンポーネントは独立しているため、再利用性が高く、メンテナンスや拡張が容易になります。
+
+## 開発方針
+
+- React Three Fiberを活用して、魅力的な3Dビジュアルを実現します。
+- ユーザーインターフェースは直感的でわかりやすいものを心がけます。
+- 物理演算を取り入れ、リアルな宝石の落下と衝突を再現します。
+
+## 今後の予定
+
+- 各画面のデザインと実装を進めます。
+- 物理演算の調整とゲームバランスの最適化を行います。
+- ユーザーテストを通じて、フィードバックを収集し改善を行います。
