@@ -8,14 +8,8 @@ const App = () => {
   return (
     <div className={styles.canvas}>
       <Canvas>
-        <OrthographicCamera makeDefault position={[5, 5, 5]} zoom={50} />
-        <OrbitControls
-          makeDefault
-          autoRotate
-          autoRotateSpeed={0.5}
-          minPolarAngle={0}
-          maxPolarAngle={Math.PI / 2}
-        />
+        <OrbitControls />
+        <OrthographicCamera makeDefault position={[0, 100, 20]} zoom={5} />
         <GameScreen />
         <EffectComposer>
           <Bloom luminanceThreshold={1} intensity={2} levels={9} mipmapBlur />

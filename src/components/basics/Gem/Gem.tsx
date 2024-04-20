@@ -1,4 +1,5 @@
-import { Caustics, MeshRefractionMaterial } from "@react-three/drei";
+import { Debug, useSphere } from "@react-three/cannon";
+import { MeshRefractionMaterial, useGLTF } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { RGBELoader } from "three-stdlib";
 import { GemModelInfo } from "./Gem.function";
@@ -8,31 +9,31 @@ export type GemProps = {
   onCollision?: (object1: any, object2: any) => void;
 };
 
-import { useGLTF } from "@react-three/drei";
-
 const Gem = (props: GemProps) => {
+  const [ref, api] = useSphere(() => ({ mass: 1 }));
   const { nodes } = useGLTF(props.gemModel.gltfPath);
   const texture = useLoader(
     RGBELoader,
     "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr",
   );
-
+  const meshNode = Object.values(nodes).find((node) => node.type === "Mesh");
   return (
     <>
-      <Caustics
-        backfaces
-        color={"white"}
-        position={[0, -0.5, 0]}
-        lightSource={[5, 5, -10]}
-        worldRadius={0.1}
-        ior={1.8}
-        backfaceIor={1.1}
-        intensity={0.1}
-      >
-        <mesh geometry={nodes.Cube.geometry} scale={props.gemModel.size}>
-          <MeshRefractionMaterial envMap={texture} toneMapped={false} />
-        </mesh>
-      </Caustics>
+      <Debug color="black" scale={1.1}>
+        {meshNode && (
+          <mesh
+            ref={ref}
+            geometry={meshNode.geometry}
+            scale={props.gemModel.size}
+          >
+            <MeshRefractionMaterial
+              envMap={texture}
+              toneMapped={false}
+              color={props.gemModel.color}
+            />
+          </mesh>
+        )}
+      </Debug>
     </>
   );
 };
