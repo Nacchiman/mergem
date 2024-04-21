@@ -9,7 +9,7 @@ const App = () => {
     <div className={styles.canvas}>
       <Canvas>
         <OrbitControls />
-        <OrthographicCamera makeDefault position={[0, 100, 20]} zoom={5} />
+        <OrthographicCamera makeDefault position={[100, 100, 20]} zoom={10} />
         <GameScreen />
         <EffectComposer>
           <Bloom luminanceThreshold={1} intensity={2} levels={9} mipmapBlur />

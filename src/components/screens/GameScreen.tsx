@@ -16,10 +16,9 @@ const GameScreen = () => {
       <directionalLight position={[-5, 3, -5]} intensity={5} />
       <Physics>
         <Debug color="black" scale={1.1}>
-          <Gem gemModel={defaultGemModels.get("gem3")!} />
-          <Gem gemModel={defaultGemModels.get("gem3")!} />
-          <Gem gemModel={defaultGemModels.get("gem3")!} />
-          <Gem gemModel={defaultGemModels.get("gem3")!} />
+          <Gem position={[0, 5, 0]} gemModel={defaultGemModels.get("gem3")!} />
+          <Gem position={[0, 10, 0]} gemModel={defaultGemModels.get("gem2")!} />
+          <Gem position={[0, 15, 0]} gemModel={defaultGemModels.get("gem1")!} />
           <Box />
         </Debug>
       </Physics>
