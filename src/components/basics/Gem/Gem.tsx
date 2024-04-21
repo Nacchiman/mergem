@@ -14,24 +14,32 @@ export type GemProps = {
 
 const toConvexProps = (
   bufferGeometry: BufferGeometry,
+  scale: Triplet,
 ): [vertices: Triplet[], faces: Triplet[]] => {
   const geo = new Geometry().fromBufferGeometry(bufferGeometry);
   geo.mergeVertices();
-  const vertices: Triplet[] = geo.vertices.map((v) => [v.x, v.y, v.z]);
+  // 頂点座標にスケールを適用
+  const vertices: Triplet[] = geo.vertices.map((v) => [
+    v.x * scale[0],
+    v.y * scale[1],
+    v.z * scale[2],
+  ]);
   const faces: Triplet[] = geo.faces.map((f) => [f.a, f.b, f.c]);
   return [vertices, faces];
 };
 
 const Gem = (props: GemProps) => {
-  // モデルのロード
   const { nodes } = useGLTF(props.gemModel.gltfPath);
-
-  // 頂点データと面データの抽出
   const meshNode = Object.values(nodes).find((node) => node.type === "Mesh");
   const geometry = meshNode?.geometry;
-  const args = useMemo(() => toConvexProps(geometry), [geometry]);
 
-  // useConvexPolyhedron の設定
+  // useMemo を使用して、ジオメトリとスケールに基づく頂点と面を計算
+  const args = useMemo(
+    () => toConvexProps(geometry, props.gemModel.size),
+    [geometry, props.gemModel.size],
+  );
+
+  // useConvexPolyhedron に頂点と面のデータを設定
   const [ref] = useConvexPolyhedron(() => ({
     args,
     mass: 1,
@@ -50,7 +58,7 @@ const Gem = (props: GemProps) => {
           <mesh
             ref={ref}
             geometry={geometry}
-            scale={props.gemModel.size}
+            scale={props.gemModel.size} // 視覚的なスケール
             position={props.position}
           >
             <MeshRefractionMaterial

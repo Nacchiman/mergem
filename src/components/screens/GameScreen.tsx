@@ -1,7 +1,7 @@
 import { Debug, Physics } from "@react-three/cannon";
-import Box from "../basics/Box";
 import Gem from "../basics/Gem/Gem";
 import { defaultGemModels } from "../basics/Gem/Gem.function";
+import Jar from "../basics/Jar";
 
 export type GameScreenProps = {
   // ここにプロパティを定義
@@ -19,7 +19,7 @@ const GameScreen = () => {
           <Gem position={[0, 5, 0]} gemModel={defaultGemModels.get("gem3")!} />
           <Gem position={[0, 10, 0]} gemModel={defaultGemModels.get("gem2")!} />
           <Gem position={[0, 15, 0]} gemModel={defaultGemModels.get("gem1")!} />
-          <Box />
+          <Jar size={[1, 1, 1]} />
         </Debug>
       </Physics>
     </>
